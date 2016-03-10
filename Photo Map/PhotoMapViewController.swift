@@ -41,15 +41,15 @@ class PhotoMapViewController: UIViewController {
     }
     
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        let locationsVC = segue.destinationViewController as! LocationsViewController
+        locationsVC.delegate = self
     }
-    */
 
 }
 
@@ -67,6 +67,13 @@ extension PhotoMapViewController:UIImagePickerControllerDelegate {
         })
     }
 
+}
+
+extension PhotoMapViewController : LocationsViewControllerDelegate {
+    func locationsPickedLocation(controller: LocationsViewController, latitude: NSNumber, longitude: NSNumber) {
+        //TODO:
+        self.navigationController?.popToViewController(self, animated: true)
+    }
 }
 
 extension PhotoMapViewController:UINavigationControllerDelegate {
