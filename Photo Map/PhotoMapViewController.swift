@@ -52,7 +52,7 @@ class PhotoMapViewController: UIViewController {
         // Pass the selected object to the new view controller.
         if segue.identifier == "fullImageSegue" {
             let fullImageVC = segue.destinationViewController as! FullImageViewController
-            fullImageVC.targetImage.image = targetImage
+            fullImageVC.imageFromButton = originalImage
         } else if segue.identifier == "tagSegue" {
             let locationsVC = segue.destinationViewController as! LocationsViewController
             locationsVC.delegate = self

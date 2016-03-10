@@ -11,10 +11,11 @@ import UIKit
 class FullImageViewController: UIViewController {
     
     @IBOutlet weak var targetImage: UIImageView!
+    var imageFromButton: UIImage!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        targetImage = UIImageView(frame: view.frame)
+        targetImage.image = imageFromButton!
         // Do any additional setup after loading the view.
     }
 
