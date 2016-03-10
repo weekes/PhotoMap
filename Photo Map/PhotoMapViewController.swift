@@ -23,6 +23,8 @@ class PhotoMapViewController: UIViewController {
         let sfRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(37.783333, -122.416667),
             MKCoordinateSpanMake(0.1, 0.1))
         mapView.setRegion(sfRegion, animated: false)
+        
+        mapView.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -72,10 +74,36 @@ extension PhotoMapViewController:UIImagePickerControllerDelegate {
 extension PhotoMapViewController : LocationsViewControllerDelegate {
     func locationsPickedLocation(controller: LocationsViewController, latitude: NSNumber, longitude: NSNumber) {
         //TODO:
+        let coordinate = CLLocationCoordinate2DMake(Double(latitude), Double(longitude))
+        
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
+        annotation.title = "Picture!"
+        mapView.addAnnotation(annotation)
+        
         self.navigationController?.popToViewController(self, animated: true)
     }
 }
 
 extension PhotoMapViewController:UINavigationControllerDelegate {
     
+}
+
+extension PhotoMapViewController:MKMapViewDelegate {
+    
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+        let reuseID = "myAnnotationView"
+        
+        var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseID)
+        if (annotationView == nil) {
+            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
+            annotationView!.canShowCallout = true
+            annotationView!.leftCalloutAccessoryView = UIImageView(frame: CGRect(x:0, y:0, width: 50, height:50))
+        }
+        
+        let imageView = annotationView?.leftCalloutAccessoryView as! UIImageView
+        imageView.image = originalImage
+        
+        return annotationView
+    }
 }
