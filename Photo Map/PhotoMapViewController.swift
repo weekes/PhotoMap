@@ -73,12 +73,23 @@ extension PhotoMapViewController:UIImagePickerControllerDelegate {
 
 extension PhotoMapViewController : LocationsViewControllerDelegate {
     func locationsPickedLocation(controller: LocationsViewController, latitude: NSNumber, longitude: NSNumber) {
-        //TODO:
         let coordinate = CLLocationCoordinate2DMake(Double(latitude), Double(longitude))
         
-        let annotation = MKPointAnnotation()
+        let annotation = PhotoAnnotation()
         annotation.coordinate = coordinate
-        annotation.title = "Picture!"
+        
+        let resizeRenderImageView = UIImageView(frame: CGRectMake(0, 0, 45, 45))
+        resizeRenderImageView.layer.borderColor = UIColor.whiteColor().CGColor
+        resizeRenderImageView.layer.borderWidth = 3.0
+        resizeRenderImageView.contentMode = UIViewContentMode.ScaleAspectFill
+        resizeRenderImageView.image = originalImage
+        
+        UIGraphicsBeginImageContext(resizeRenderImageView.frame.size)
+        resizeRenderImageView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        var thumbnail = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        annotation.photo = thumbnail
         mapView.addAnnotation(annotation)
         
         self.navigationController?.popToViewController(self, animated: true)
@@ -102,7 +113,7 @@ extension PhotoMapViewController:MKMapViewDelegate {
         }
         
         let imageView = annotationView?.leftCalloutAccessoryView as! UIImageView
-        imageView.image = originalImage
+        imageView.image = (annotation as! PhotoAnnotation).photo
         
         return annotationView
     }
