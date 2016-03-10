@@ -14,6 +14,7 @@ class PhotoMapViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     
     var originalImage: UIImage?
+    var targetImage: UIImage?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,8 +50,19 @@ class PhotoMapViewController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        let locationsVC = segue.destinationViewController as! LocationsViewController
-        locationsVC.delegate = self
+        if segue.identifier == "fullImageSegue" {
+            let fullImageVC = segue.destinationViewController as! FullImageViewController
+            fullImageVC.targetImage.image = targetImage
+        } else if segue.identifier == "tagSegue" {
+            let locationsVC = segue.destinationViewController as! LocationsViewController
+            locationsVC.delegate = self
+        }
+        
+    }
+    
+    func seeFullView(sender: PhotoButton) {
+        targetImage = sender.photo!
+        self.performSegueWithIdentifier("fullImageSegue", sender: self)
     }
 
 }
@@ -110,10 +122,18 @@ extension PhotoMapViewController:MKMapViewDelegate {
             annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseID)
             annotationView!.canShowCallout = true
             annotationView!.leftCalloutAccessoryView = UIImageView(frame: CGRect(x:0, y:0, width: 50, height:50))
+
+            let imageView = annotationView!.leftCalloutAccessoryView as! UIImageView
+            imageView.image = (annotation as! PhotoAnnotation).photo
+            
+            let annotationButton = PhotoButton(type: UIButtonType.DetailDisclosure)
+            annotationButton.photo = imageView.image
+            annotationButton.addTarget(self, action: "seeFullView:", forControlEvents: UIControlEvents.TouchUpInside)
+            annotationButton.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+            annotationView!.rightCalloutAccessoryView = annotationButton
         }
         
-        let imageView = annotationView?.leftCalloutAccessoryView as! UIImageView
-        imageView.image = (annotation as! PhotoAnnotation).photo
+        
         
         return annotationView
     }

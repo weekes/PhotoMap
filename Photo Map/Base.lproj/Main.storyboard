@@ -61,9 +61,23 @@
                     <view key="view" contentMode="scaleToFill" id="IER-PT-2nq">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2C9-Vs-oJN">
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="2C9-Vs-oJN" secondAttribute="trailing" id="381-fF-Z1W"/>
+                            <constraint firstItem="N8d-FM-OAP" firstAttribute="top" secondItem="2C9-Vs-oJN" secondAttribute="bottom" id="9pJ-P4-PWm"/>
+                            <constraint firstItem="2C9-Vs-oJN" firstAttribute="leading" secondItem="IER-PT-2nq" secondAttribute="leading" id="YFH-60-h4z"/>
+                            <constraint firstItem="2C9-Vs-oJN" firstAttribute="top" secondItem="FF8-mr-LhG" secondAttribute="bottom" id="ZiI-Ty-WxI"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="HUo-VF-R6y"/>
+                    <connections>
+                        <outlet property="targetImage" destination="2C9-Vs-oJN" id="Lh8-DU-kSG"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QRl-fe-rlf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
